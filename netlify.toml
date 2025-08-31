@@ -1,7 +1,7 @@
 # Netlify configuration for SpeakFlow web app
 [build]
-  command = "cd mobile && npm install && NODE_ENV=production npx expo export --platform web && cd .. && cp -r mobile/dist/* ."
-  publish = "."
+  command = "npm install && npx expo export --platform web"
+  publish = "dist"
 
 [build.environment]
   NPM_FLAGS = "--version"
