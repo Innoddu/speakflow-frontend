@@ -16,7 +16,7 @@ const getBaseUrl = () => {
     }
   } else {
     // Production environment (Cloudflare Tunnel Domain)
-    return 'https://detail-unable-technician-stupid.trycloudflare.com';
+    return 'https://detail-unable-technician-stupid.trycloudflare.com/api';
   }
 };
 
