@@ -15,8 +15,8 @@ const getBaseUrl = () => {
       return 'http://localhost:5030/api';
     }
   } else {
-    // Production environment
-    return 'https://georgia-much-postage-laptop.trycloudflare.com/api';
+    // Production environment (Cloudflare Tunnel Domain)
+    return 'https://detail-unable-technician-stupid.trycloudflare.com';
   }
 };
 
