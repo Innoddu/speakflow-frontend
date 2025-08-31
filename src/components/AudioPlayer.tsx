@@ -184,6 +184,16 @@ const WebAudioPlayer = forwardRef<AudioPlayerRef, Props>(({ audioUrl }, ref) => 
     },
     play: () => {
       if (audioRef.current) {
+        // Stop any currently playing audio and clean up
+        if (isPlaying) {
+          audioRef.current.pause();
+          stopVoiceActivityDetection();
+          if (endCheckInterval.current) {
+            clearInterval(endCheckInterval.current);
+            endCheckInterval.current = null;
+          }
+        }
+
         audioRef.current.play()
           .then(() => {
             setIsPlaying(true);
@@ -214,6 +224,16 @@ const WebAudioPlayer = forwardRef<AudioPlayerRef, Props>(({ audioUrl }, ref) => 
     },
     playWithVAD: (onSilenceDetected: () => void, endTime?: number) => {
       if (audioRef.current) {
+        // Stop any currently playing audio and clean up
+        if (isPlaying) {
+          audioRef.current.pause();
+          stopVoiceActivityDetection();
+          if (endCheckInterval.current) {
+            clearInterval(endCheckInterval.current);
+            endCheckInterval.current = null;
+          }
+        }
+
         // Set sentence end time if provided
         if (endTime) {
           setSentenceEndTime(endTime);
