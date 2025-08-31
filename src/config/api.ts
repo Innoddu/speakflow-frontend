@@ -16,7 +16,7 @@ const getBaseUrl = () => {
     }
   } else {
     // Production environment
-    return 'https://speakflow-ua78.onrender.com/api';
+    return 'http://3.135.9.250:5030/api';
   }
 };
 
