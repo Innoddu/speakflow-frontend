@@ -52,13 +52,24 @@ const WebAudioPlayer = forwardRef<AudioPlayerRef, Props>(({ audioUrl }, ref) => 
   const startVoiceActivityDetection = (onSilenceDetected: () => void) => {
     if (Platform.OS !== 'web') return;
     
+    // Clean up any existing VAD setup first
+    stopVoiceActivityDetection();
+    
     onSilenceDetectedRef.current = onSilenceDetected;
     
     try {
       // Create audio context for analysis
       const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
       const analyser = audioContext.createAnalyser();
-      const source = audioContext.createMediaElementSource(audioRef.current!);
+      
+      // Check if audio element is already connected to avoid double connection
+      let source;
+      try {
+        source = audioContext.createMediaElementSource(audioRef.current!);
+      } catch (error) {
+        console.warn('⚠️ Audio element already connected, skipping VAD setup');
+        return;
+      }
       
       source.connect(analyser);
       analyser.connect(audioContext.destination);
@@ -147,16 +158,20 @@ const WebAudioPlayer = forwardRef<AudioPlayerRef, Props>(({ audioUrl }, ref) => 
   };
 
   const stopVoiceActivityDetection = () => {
-    if (vadIntervalRef.current) {
-      clearInterval(vadIntervalRef.current);
-      vadIntervalRef.current = null;
+    try {
+      if (vadIntervalRef.current) {
+        clearInterval(vadIntervalRef.current);
+        vadIntervalRef.current = null;
+      }
+      if (audioContextRef.current && audioContextRef.current.state !== 'closed') {
+        audioContextRef.current.close();
+        audioContextRef.current = null;
+      }
+      analyserRef.current = null;
+      onSilenceDetectedRef.current = null;
+    } catch (error) {
+      console.warn('⚠️ Error during VAD cleanup:', error);
     }
-    if (audioContextRef.current) {
-      audioContextRef.current.close();
-      audioContextRef.current = null;
-    }
-    analyserRef.current = null;
-    onSilenceDetectedRef.current = null;
   };
 
   useImperativeHandle(ref, () => ({
