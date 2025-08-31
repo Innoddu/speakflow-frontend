@@ -144,7 +144,7 @@ export const getTranscriptData = async (videoId: string): Promise<TranscriptResu
 // Get YouTube subtitles
 export const getYouTubeSubtitles = async (videoId: string, useSpacy: boolean = true): Promise<TranscriptResult> => {
   try {
-    const url = `${API_CONFIG.BASE_URL}/whisper/youtube-subtitles/${videoId}${useSpacy ? '?useSpacy=true' : '?useSpacy=false'}`;
+    const url = `${API_CONFIG.BASE_URL.replace('/api', '')}/whisper/youtube-subtitles/${videoId}${useSpacy ? '?useSpacy=true' : '?useSpacy=false'}`;
     console.log('🌐 Attempting YouTube subtitles request to:', url);
     const response = await fetch(url);
     console.log('📡 YouTube subtitles response status:', response.status);
@@ -223,7 +223,7 @@ export const getWhisperFromCache = async (videoId: string): Promise<TranscriptRe
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
     
-    const cacheResponse = await fetch(`${API_CONFIG.BASE_URL}/whisper/cached/${videoId}`, {
+    const cacheResponse = await fetch(`${API_CONFIG.BASE_URL.replace('/api', '')}/whisper/cached/${videoId}`, {
       signal: controller.signal
     });
     
@@ -304,7 +304,7 @@ export const transcribeWithWhisper = async (videoId: string): Promise<Transcript
     console.log('📄 Platform:', Platform.OS);
     
     // Upload to Whisper API
-    const response = await fetch(`${API_CONFIG.BASE_URL}/whisper/transcribe`, {
+    const response = await fetch(`${API_CONFIG.BASE_URL.replace('/api', '')}/whisper/transcribe`, {
       method: 'POST',
       body: formData,
     });
