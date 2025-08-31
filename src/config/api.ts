@@ -16,7 +16,7 @@ const getBaseUrl = () => {
     }
   } else {
     // Production environment
-    return 'http://3.135.9.250/api';
+    return 'https://3.135.9.250/api';
   }
 };
 
