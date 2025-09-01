@@ -15,8 +15,8 @@ const getBaseUrl = () => {
       return 'http://localhost:5030/api';
     }
   } else {
-    // Production environment (Cloudflare Tunnel Domain)
-    return 'https://detail-unable-technician-stupid.trycloudflare.com/api';
+    // Production environment (Railway URL)
+    return 'https://speakflow-backend-production.up.railway.app/api';
   }
 };
 
@@ -56,4 +56,4 @@ console.log('🔧 API Configuration:', {
   baseUrl: API_CONFIG.BASE_URL,
   isDevelopment: API_CONFIG.IS_DEVELOPMENT,
   platform: API_CONFIG.PLATFORM,
-}); 
+});
